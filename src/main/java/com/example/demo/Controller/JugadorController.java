@@ -123,7 +123,25 @@ public class JugadorController {
 	    return ResponseEntity.badRequest().body("Habilidad existente.");
 	}
     
-    
+    public Jugador actuualizarInfo_Jugador(@PathVariable("nuuid") String nuuid, @RequestBody Jugador actuaizar) {
+        Jugador jugador = jugadorRepository.findByNuuid(nuuid);
+
+        if (jugador!=null) {
+        	jugador.setNombre(actuaizar.getNombre());
+            jugador.setFecha_nacimiento(actuaizar.getFecha_nacimiento());
+            jugador.setDescripcion(actuaizar.getDescripcion());
+            jugador.setClase(actuaizar.getClase());
+            jugador.setGenero(actuaizar.getGenero());
+            jugador.setRango(actuaizar.getRango());
+            jugador.setHabilidades(actuaizar.getHabilidades());
+
+            Jugador guardar = jugadorRepository.save(jugador);
+            return guardar;            
+        }
+        return null;
+        
+    }
+
     
     
     
