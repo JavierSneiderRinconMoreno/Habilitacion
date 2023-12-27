@@ -38,22 +38,19 @@ public class Jugador {
     @JoinColumn(name = "clase", nullable = false)
     private Clase  clase;
 	
-	@ManyToMany	(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
-	@JoinTable(
-			name="habilidad",
-			joinColumns = @JoinColumn(
-					name = "habilidad" , referencedColumnName = "id"), 
-					inverseJoinColumns = @JoinColumn (
-							name = "habilidad_id",
-							referencedColumnName = "id"
-							
-							)					
-					)
-	private Habilidad habilidad;
+	 @ManyToMany
+	    @JoinTable(
+	        name = "jugador_habilidad",
+	        joinColumns = @JoinColumn(name = "jugador_id"),
+	        inverseJoinColumns = @JoinColumn(name = "habilidad_id")
+	    )
+	    private List<Habilidad> habilidades;
 	
 	public Jugador() {
 		
 	}
+	
+
 	
 	
 
