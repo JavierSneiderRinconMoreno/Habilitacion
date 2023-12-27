@@ -57,7 +57,7 @@ public class JugadorController {
     }
     
     @GetMapping("/{clase}")
-    public ResponseEntity<List<Jugador>> listarugadoresPorClase(@PathVariable("clase") String clase){
+    public ResponseEntity<List<Jugador>> listarJugadoresByClase(@PathVariable("clase") String clase){
 		
     	Clase clases = claseRepository.findByNuuid(clase);		
 		 if (clases == null) {
@@ -72,20 +72,20 @@ public class JugadorController {
 	}
     
     @PostMapping
-	public ResponseEntity<Jugador> crearJugador(@RequestBody Jugador nuevoJugador) {
-		Jugador jugador = jugadorRepository.findByNombre(nuevoJugador.getNombre());
+	public ResponseEntity<Jugador> crearJugador(@RequestBody Jugador creado) {
+		Jugador jugador = jugadorRepository.findByNombre(creado.getNombre());
 
 	    if (jugador != null) {
 	        return ResponseEntity.badRequest().body(null);
 	    }
 
-	    Jugador jugadoradorCreado = jugadorRepository.save(nuevoJugador);
+	    Jugador jugadoradorCreado = jugadorRepository.save(creado);
 	    return ResponseEntity.status(HttpStatus.CREATED).body(jugadoradorCreado);
 	}
     
     
     @GetMapping("/{nuuid}/habilidades")
-	 public ResponseEntity<List<Habilidad>> listarHabilidadesDeJugador(@PathVariable("nuuid") String nuuid) {
+	 public ResponseEntity<List<Habilidad>> listarHabilidadJugador(@PathVariable("nuuid") String nuuid) {
 		Jugador jugador = jugadorRepository.findByNuuid(nuuid);
 
 	     if (jugador == null) {
@@ -97,7 +97,7 @@ public class JugadorController {
     
     
     @PostMapping("/{nuuid1}/habilidades/{nuuid2}")
-	public ResponseEntity<String> agregarHabilidadAJugador(
+	public ResponseEntity<String> agregarHabilidadByJugador(
 	        @PathVariable("nuuid1") String nuuid_jugador,
 	        @PathVariable("nuuid2") String nuuid_habilidad) {
 
