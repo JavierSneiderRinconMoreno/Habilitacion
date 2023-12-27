@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface ClaseRepository extends JpaRepository<Clase, Integer>{
 
-	//public List<Clase> findByNombre(String nombre);
+	public Clase  findByNuuid(String nuuid);
 }
