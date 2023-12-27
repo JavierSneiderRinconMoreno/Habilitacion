@@ -6,4 +6,5 @@ import com.example.demo.Entity.Habilidad;
 
 public interface HabilidadRepostory extends JpaRepository<Habilidad, Integer> {
 
+	public Habilidad  findByNuuid(String nuuid);
 }

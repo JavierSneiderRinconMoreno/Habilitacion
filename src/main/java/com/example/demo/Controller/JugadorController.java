@@ -4,6 +4,7 @@ import com.example.demo.Entity.Jugador;
 import com.example.demo.Entity.Clase;
 import com.example.demo.Entity.Habilidad;
 import com.example.demo.Repository.ClaseRepository;
+import com.example.demo.Repository.HabilidadRepostory;
 import com.example.demo.Repository.JugadorRepository;
 
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
@@ -18,11 +19,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @RequestMapping("/jugadores")
 public class JugadorController {
+	
+	HabilidadRepostory habilidadRepository;
 
 	@Autowired
 	JugadorRepository jugadorRepository;
@@ -90,4 +94,41 @@ public class JugadorController {
 	     List<Habilidad> habilidades = jugador.getHabilidades();
 	     return ResponseEntity.ok(habilidades);
 	 }
+    
+    
+    @PostMapping("/{nuuid1}/habilidades/{nuuid2}")
+	public ResponseEntity<String> agregarHabilidadAJugador(
+	        @PathVariable("nuuid1") String nuuid_jugador,
+	        @PathVariable("nuuid2") String nuuid_habilidad) {
+
+	    Jugador jugador = jugadorRepository.findByNuuid(nuuid_jugador);
+	    Habilidad habilidad = habilidadRepository.findByNuuid(nuuid_habilidad);
+
+	    if (jugador == null || habilidad == null) {
+	        return ResponseEntity.notFound().build();
+	    }
+
+	    List<Habilidad> jugador_habilidad = jugador.getHabilidades();
+	    if (jugador_habilidad == null) {
+	    	jugador_habilidad = new ArrayList<>();
+	    }
+	    
+	    if (!jugador_habilidad.contains(habilidad)) {
+	    	jugador_habilidad.add(habilidad);
+	        jugador.setHabilidades(jugador_habilidad); 
+	        jugadorRepository.save(jugador); 
+	        return ResponseEntity.ok().build();
+	    }
+
+	    return ResponseEntity.badRequest().body("Habilidad existente.");
+	}
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }
