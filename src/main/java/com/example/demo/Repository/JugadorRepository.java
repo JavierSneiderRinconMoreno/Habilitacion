@@ -12,7 +12,7 @@ public interface JugadorRepository extends JpaRepository<Jugador, Integer>{
 	
 	public  List<Jugador> findByNombre(String nombre);
 	
-	public List<Jugador> findByClase_id(Integer clase);
+	//public List<Jugador>  findByClase_id(Integer clase_id);;
 	
 	public List<Jugador> findByNuuid(String nuuid);
 

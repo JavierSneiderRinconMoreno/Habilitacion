@@ -1,7 +1,12 @@
 package com.example.demo.Entity;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -12,43 +17,43 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
 import lombok.Data;
 
 @Data
 @Entity
-public class Jugador {
+public class Jugador implements Serializable {
 	
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@SequenceGenerator(name="sequence_jugador_id",allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "sequence_jugador_id")
 	private Integer id;
+	
 	private String nombre;
-	private Date fecha_Nacimiento;
+	private Date fecha_nacimiento;
 	private String descripcion;
-	private Integer clase_id;
+	
+	@ManyToOne
+	@JoinColumn(name="clase_id")
+	private Clase clase;
+	
 	private String genero;
-	private Integer rango_id;	
-	private String nuuid;
 	
 	@ManyToOne
-    @JoinColumn(name = "rango", nullable = false)
-    private Rango  rango;
+	@JoinColumn(name="rango_id")
+	private Rango rango;
 	
-
-	@ManyToOne
-    @JoinColumn(name = "clase", nullable = false)
-    private Clase  clase;
-	
-	 @ManyToMany
-	    @JoinTable(
-	        name = "jugador_habilidad",
+	@JsonIgnore
+	@ManyToMany
+	@JoinTable(
+	        name = "habilidad_jugador",
 	        joinColumns = @JoinColumn(name = "jugador_id"),
 	        inverseJoinColumns = @JoinColumn(name = "habilidad_id")
 	    )
-	    private List<Habilidad> habilidades;
+    private List<Habilidad> habilidades;
 	
-	public Jugador() {
-		
-	}
+	private String nuuid;
+	
 	
 
 	
